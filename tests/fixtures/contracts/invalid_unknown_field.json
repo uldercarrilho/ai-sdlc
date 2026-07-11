@@ -1,0 +1,81 @@
+{
+  "schema_version": "0.1.0",
+  "unexpected": true,
+  "contract": {
+    "contract_id": "CONTRACT-001",
+    "contract_version": 1,
+    "task_id": "TASK-001",
+    "status": "draft",
+    "repository": {
+      "base_revision": "git:abc1234",
+      "workspace_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000001",
+      "environment_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000002"
+    },
+    "objective": "Fix the example handler bug described in AC-1.",
+    "non_goals": ["Do not change public API surface."],
+    "acceptance": [
+      {
+        "id": "AC-1",
+        "criterion": "Example handler returns expected value for nominal input."
+      }
+    ],
+    "impact_risk": {
+      "level": "R1",
+      "reasons": ["Single component behavior change with no public contract change."]
+    },
+    "oracle": {
+      "independence": "visible",
+      "protection": "visible",
+      "determinism": "deterministic",
+      "coverage": "partial",
+      "derived_strength": "partial"
+    },
+    "constraints": {
+      "compatibility": ["Existing callers remain backward compatible."],
+      "interfaces": [],
+      "invariants": [],
+      "performance": []
+    },
+    "authority": {
+      "read_allow": ["**"],
+      "read_deny": [],
+      "write_allow": ["src/example/**"],
+      "write_deny": [".github/workflows/**"],
+      "protected_paths": [".github/workflows/**"],
+      "path_precedence": "deny_overrides_allow",
+      "forbidden_actions": ["push_remote"],
+      "network": { "mode": "denied", "hosts": [] },
+      "external_side_effects": { "permitted": false, "actions": [] }
+    },
+    "verification": [
+      {
+        "id": "V-1",
+        "oracle": "command",
+        "run": "npm test -- example",
+        "expect": { "exit_code": 0 },
+        "protected": false
+      }
+    ],
+    "reviewers": { "required": [] },
+    "expected_change": {
+      "anticipated_edits": ["src/example/handler.ts"],
+      "changed_lines_alert": 100
+    },
+    "rollback": { "required": false, "reason": "Unmerged source patch only." },
+    "release": { "mode": "pull_request", "staged_rollout_required": false },
+    "budgets": {
+      "model_usd": 5.0,
+      "context_tokens": 100000,
+      "tool_calls": 50,
+      "ci_minutes": 20,
+      "repair_cycles_total": 3,
+      "wall_clock_minutes": 60
+    },
+    "handoff": {
+      "require": ["diff", "check_results", "deviations", "limitations", "residual_risks"]
+    },
+    "escalation": {
+      "on": ["repeated_failure_signature", "ambiguous_acceptance"]
+    }
+  }
+}
