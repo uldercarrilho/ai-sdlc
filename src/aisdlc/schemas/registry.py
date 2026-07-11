@@ -7,7 +7,6 @@ from importlib import resources
 from typing import Any
 
 from jsonschema import Draft202012Validator
-from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 
 from aisdlc.errors import ValidationError
 

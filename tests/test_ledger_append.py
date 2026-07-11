@@ -1,9 +1,7 @@
 import json
 from datetime import datetime, timezone
-from pathlib import Path
 from uuid import uuid4
 
-import pytest
 from ulid import ULID
 
 from aisdlc.ledger.chain import GENESIS_PREVIOUS_HASH, compute_event_hash

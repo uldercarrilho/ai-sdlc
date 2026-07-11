@@ -1,4 +1,3 @@
-import sqlite3
 
 from aisdlc.ledger.db import connect, init_schema
 
