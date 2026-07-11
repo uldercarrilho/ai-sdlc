@@ -40,6 +40,8 @@ The target architecture is a local-first, vendor-neutral control plane with a co
 
 ## 2. Goals and success criteria
 
+
+
 ### 2.1 Goals
 
 1. Maximize implementation quality and long-term maintainability.
@@ -49,6 +51,8 @@ The target architecture is a local-first, vendor-neutral control plane with a co
 5. Remain portable across model vendors and polyglot repositories.
 6. Use deterministic software evidence as the primary completion authority.
 7. Preserve a practical path from today’s Cursor/Superpowers workflow to more automation.
+
+
 
 ### 2.2 Success criteria
 
@@ -83,6 +87,8 @@ These are initial operating guardrails, not universal constants. Replace them on
 - Buying local inference hardware before measured utilization and break-even evidence exist.
 - Replacing compilers, tests, static analysis, security tools, or human product judgment with model confidence.
 
+
+
 ## 3. Operating assumptions
 
 - The primary operator is one senior software engineer.
@@ -95,7 +101,11 @@ These are initial operating guardrails, not universal constants. Replace them on
 - Public coding benchmarks are weak priors rather than deployment decisions.
 - Source code, prompts, traces, and artifacts may be sensitive and require explicit retention and access policy.
 
+
+
 ## 4. Critical analysis of the current workflow
+
+
 
 ### 4.1 What is sound
 
@@ -150,6 +160,8 @@ The design addresses all seven rather than assuming one additional document will
 
 ## 5. Evidence summary and state of the art
 
+
+
 ### 5.1 What current tools actually converge on
 
 Across Cursor, Claude Code, Codex, GitHub Copilot, Gemini CLI, OpenHands, Roo Code, Cline, Aider, Amp, Goose, Augment, Devin, Factory, Kiro, Jules, and research harnesses, recurring mechanisms documented across several systems are:
@@ -194,30 +206,34 @@ Feature statements in this section come from official documentation. Comparative
 - **Devin**, **Augment Cosmos**, **Codex cloud**, **Copilot coding agent**, **Kiro Web**, and **Jules** provide isolated managed environments and background execution.
 - They trade local control and transparency for operational convenience. Their unattended claims should be tested on internal tasks rather than inferred from vendor success rates.
 
+
+
 #### 5.2.1 Criteria-based tool comparison
 
 Legend: **native** means documented runtime support; **partial** means optional, preview, or surface-dependent; **workflow** means primarily convention or prompt guidance; **absent** means not evidenced in the reviewed documentation.
 
-| Tool | Specification | Repository context | Isolated writers | Subagents/orchestration | Hard run budgets | Primary design lesson |
-|---|---|---|---|---|---|---|
-| Superpowers | workflow | workflow | workflow via host | workflow via host | absent | Strong discipline needs runtime enforcement |
-| Cursor | native | native index/search | native worktrees/cloud | native | partial | Best concrete host fit for this design |
-| Claude Code | native | native | partial/worktree opt-in | native | native limits | Context and filesystem isolation are separate choices |
-| OpenAI Codex | native | native | native | native | partial | Strong sandbox/worktree primitives; add economic accounting |
-| GitHub Copilot | native | native | native | native | native enterprise controls | Deep GitHub lifecycle integration and revalidated memory |
-| Gemini CLI | native | native | partial | native | native turn limits | Explicit plan/execute routing is useful but stage routing is insufficient |
-| OpenHands | partial/preset | native | partial | native | native per-task limits | Event-driven open SDK is a strong control-plane reference |
-| Roo Code | partial/modes | native | absent | native nested tasks | native | Conversation isolation does not isolate files |
-| Cline | native Plan/Act | native | partial/preview | partial/native by surface | partial | Separate plan and act models require handoff safeguards |
-| Aider | partial | native graph-ranked map | absent | absent | partial | Simple retrieval plus deterministic repair remains competitive |
-| Amp | workflow | native local/remote | absent | native | partial | Cross-model advice is useful; unconstrained fan-out is costly |
-| Goose | workflow recipes | partial | absent | native subrecipes | native turn/retry limits | Typed recipes are closer to executable contracts than prose prompts |
-| Augment | partial | native cross-repository | native managed VMs | native | native enterprise budgets | Powerful proprietary context requires internal retrieval evaluation |
-| Devin | native | native | native managed VMs | native child sessions | native session caps | Unattended operation still needs narrow verifiable tasks |
-| Factory | native | native | partial | native Missions | partial | Specification and validator roles are useful when boundaries are real |
-| Kiro | native | native | native in web mode | native | partial | Requirements-to-task traceability is a useful artifact pattern |
-| Jules | native | partial | native cloud VM | absent as a team | partial | Independent background attempts are not collaborative orchestration |
-| SWE-agent | absent | partial | native container | absent | native | Reproducible issue-to-patch harness, not an SDLC |
+
+| Tool           | Specification    | Repository context      | Isolated writers        | Subagents/orchestration   | Hard run budgets           | Primary design lesson                                                     |
+| -------------- | ---------------- | ----------------------- | ----------------------- | ------------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| Superpowers    | workflow         | workflow                | workflow via host       | workflow via host         | absent                     | Strong discipline needs runtime enforcement                               |
+| Cursor         | native           | native index/search     | native worktrees/cloud  | native                    | partial                    | Best concrete host fit for this design                                    |
+| Claude Code    | native           | native                  | partial/worktree opt-in | native                    | native limits              | Context and filesystem isolation are separate choices                     |
+| OpenAI Codex   | native           | native                  | native                  | native                    | partial                    | Strong sandbox/worktree primitives; add economic accounting               |
+| GitHub Copilot | native           | native                  | native                  | native                    | native enterprise controls | Deep GitHub lifecycle integration and revalidated memory                  |
+| Gemini CLI     | native           | native                  | partial                 | native                    | native turn limits         | Explicit plan/execute routing is useful but stage routing is insufficient |
+| OpenHands      | partial/preset   | native                  | partial                 | native                    | native per-task limits     | Event-driven open SDK is a strong control-plane reference                 |
+| Roo Code       | partial/modes    | native                  | absent                  | native nested tasks       | native                     | Conversation isolation does not isolate files                             |
+| Cline          | native Plan/Act  | native                  | partial/preview         | partial/native by surface | partial                    | Separate plan and act models require handoff safeguards                   |
+| Aider          | partial          | native graph-ranked map | absent                  | absent                    | partial                    | Simple retrieval plus deterministic repair remains competitive            |
+| Amp            | workflow         | native local/remote     | absent                  | native                    | partial                    | Cross-model advice is useful; unconstrained fan-out is costly             |
+| Goose          | workflow recipes | partial                 | absent                  | native subrecipes         | native turn/retry limits   | Typed recipes are closer to executable contracts than prose prompts       |
+| Augment        | partial          | native cross-repository | native managed VMs      | native                    | native enterprise budgets  | Powerful proprietary context requires internal retrieval evaluation       |
+| Devin          | native           | native                  | native managed VMs      | native child sessions     | native session caps        | Unattended operation still needs narrow verifiable tasks                  |
+| Factory        | native           | native                  | partial                 | native Missions           | partial                    | Specification and validator roles are useful when boundaries are real     |
+| Kiro           | native           | native                  | native in web mode      | native                    | partial                    | Requirements-to-task traceability is a useful artifact pattern            |
+| Jules          | native           | partial                 | native cloud VM         | absent as a team          | partial                    | Independent background attempts are not collaborative orchestration       |
+| SWE-agent      | absent           | partial                 | native container        | absent                    | native                     | Reproducible issue-to-patch harness, not an SDLC                          |
+
 
 This table compares documented mechanisms, not solution quality. Product effectiveness must be measured with the same model, task, sandbox, budget, and evaluator.
 
@@ -252,11 +268,13 @@ Ephemeral subagents are justified for independent research, disjoint implementat
 
 ## 6. Architecture alternatives
 
-| Approach | Main ownership model | Strengths | Principal weaknesses | Intended role |
-|---|---|---|---|---|
-| Coherent strong-agent baseline | One strong agent owns exploration through repair | Minimal handoff loss; simple; strong cache reuse; best control arm | Higher visible inference price; self-anchoring risk | Baseline and default for tightly coupled work |
-| Adaptive evidence-driven controller | One daily owner with policy-controlled cheap delegation and frontier escalation | Leading hypothesis for quality per total dollar; reacts to evidence; limits unnecessary frontier use | Requires telemetry, calibration, and routing maintenance | **Candidate target, pending internal validation** |
-| Contracted multi-agent pipeline | Frontier coordinator assigns typed isolated workers | Parallel breadth; strict ownership; useful for disjoint modules and best-of-N | Handoff loss, integration cost, correlated errors, reviewer saturation | Escalation lane for demonstrably decomposable work |
+
+| Approach                            | Main ownership model                                                            | Strengths                                                                                            | Principal weaknesses                                                   | Intended role                                      |
+| ----------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
+| Coherent strong-agent baseline      | One strong agent owns exploration through repair                                | Minimal handoff loss; simple; strong cache reuse; best control arm                                   | Higher visible inference price; self-anchoring risk                    | Baseline and default for tightly coupled work      |
+| Adaptive evidence-driven controller | One daily owner with policy-controlled cheap delegation and frontier escalation | Leading hypothesis for quality per total dollar; reacts to evidence; limits unnecessary frontier use | Requires telemetry, calibration, and routing maintenance               | **Candidate target, pending internal validation**  |
+| Contracted multi-agent pipeline     | Frontier coordinator assigns typed isolated workers                             | Parallel breadth; strict ownership; useful for disjoint modules and best-of-N                        | Handoff loss, integration cost, correlated errors, reviewer saturation | Escalation lane for demonstrably decomposable work |
+
 
 The adaptive controller is the selected design hypothesis. It is promoted to the operational default only if the evaluation guardrails are met. The coherent strong-agent workflow remains its mandatory control arm. Contracted workers are an explicit branch, not the universal execution path.
 
@@ -280,6 +298,10 @@ flowchart LR
     X <--> E
     V <--> E
 ```
+
+
+
+
 
 ### 7.1 Human authority
 
@@ -347,6 +369,8 @@ The planned Phase 1A implementation will use SQLite for metadata and content-add
 
 ## 8. Components and interfaces
 
+
+
 ### 8.1 Contract compiler
 
 **Responsibility:** Convert approved intent into a schema-valid Execution Contract.
@@ -400,6 +424,8 @@ It:
 - checkpoints green repository state;
 - prevents multiple writers from sharing one workspace;
 - reconstructs state from events rather than hidden conversational memory.
+
+
 
 ### 8.4 Risk and budget router
 
@@ -473,6 +499,8 @@ It does not trust the implementer’s statement that tests passed. It records:
 - flake classification;
 - gate policy version.
 
+
+
 ### 8.8 Evidence store
 
 **Responsibility:** Persist append-only events and immutable artifacts.
@@ -516,6 +544,8 @@ This local chain detects accidental corruption and non-atomic modification; it d
 
 ## 9. Execution Package
 
+
+
 ### 9.1 Artifact model
 
 ```mermaid
@@ -532,9 +562,13 @@ flowchart TD
     A -->|human approval| EC2[New contract version]
 ```
 
+
+
 The priority rule is:
 
 > Commitments remain static; repository facts remain refreshable.
+
+
 
 ### 9.2 Illustrative package instance
 
@@ -764,6 +798,10 @@ stateDiagram-v2
     Blocked --> [*]
 ```
 
+
+
+
+
 ### 10.1 Intake and risk classification
 
 Record:
@@ -814,6 +852,8 @@ The primary owner:
 - runs the cheapest relevant checks;
 - creates a checkpoint at every validated green state;
 - requests amendment instead of silently broadening authority.
+
+
 
 ### 10.5 Route after evidence
 
@@ -901,6 +941,8 @@ Current candidates:
 - **[Claude Opus 4.8](https://docs.anthropic.com/en/docs/about-claude/models/overview)** — more established operational fallback.
 - **[Gemini 3.1 Pro Preview](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview)** — useful where very large multimodal context is genuinely required, but preview status and coding value should be considered.
 
+
+
 ### 11.4 Illustrative current call economics
 
 For an uncached call with 100K input and 20K output tokens, approximate model-only costs from current direct-provider prices are:
@@ -936,13 +978,15 @@ No hardware purchase is recommended for the current workflow.
 
 The ranges below separate discrete accelerator memory, unified memory, and system RAM. Weight-only size is smaller than runtime memory; KV cache, runtime buffers, batching, and vision can require substantially more.
 
-| Hardware architecture | Example deployment | Residency and offload expectation | Initial context target | Suitable work |
-|---|---|---|---|---|
-| 16 GB discrete VRAM plus at least 32 GB system RAM | GPT-OSS 20B native MXFP4, where kernels support it | Keep weights accelerator-resident; CPU offload is an experiment, not an interactive default | 16–32K | extraction, docs, log triage, simple test scaffolding |
-| 24–32 GB discrete VRAM plus 32–64 GB system RAM | Qwen3.6 27B Q4 at roughly 16–18 GB weights; Qwen3-Coder 30B Q4; Devstral 24B Q4 | Prefer full accelerator residency; use system RAM for runtime and build tools, not sustained layer offload | 16–32K | bounded implementation, local refactors, test generation, review triage |
-| About 64 GB unified memory, or at least 48 GB aggregate VRAM plus 64 GB system RAM | Qwen3-Coder-Next 80B-A3B Q4 at roughly 48.4 GB weights | Unified-memory bandwidth or multi-GPU interconnect becomes the limiting factor; avoid CPU layer offload where possible | begin near 32K | stronger coding-agent experiments and private-code workflows |
-| One 80 GB accelerator plus at least 128 GB system RAM, or 128 GB unified memory | GPT-OSS 120B MXFP4 or Mistral 119–128B-class quantization | Accelerator/unified-memory resident, runtime-specific | workload-tested | workstation/server experimentation |
-| At least 192 GB aggregate accelerator memory with server-class system RAM | DeepSeek V4 Flash, MiniMax M3, Kimi, GLM, or larger open-weight deployments | Multi-accelerator server deployment | deployment-specific | controlled datacenter service |
+
+| Hardware architecture                                                              | Example deployment                                                              | Residency and offload expectation                                                                                      | Initial context target | Suitable work                                                           |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------- |
+| 16 GB discrete VRAM plus at least 32 GB system RAM                                 | GPT-OSS 20B native MXFP4, where kernels support it                              | Keep weights accelerator-resident; CPU offload is an experiment, not an interactive default                            | 16–32K                 | extraction, docs, log triage, simple test scaffolding                   |
+| 24–32 GB discrete VRAM plus 32–64 GB system RAM                                    | Qwen3.6 27B Q4 at roughly 16–18 GB weights; Qwen3-Coder 30B Q4; Devstral 24B Q4 | Prefer full accelerator residency; use system RAM for runtime and build tools, not sustained layer offload             | 16–32K                 | bounded implementation, local refactors, test generation, review triage |
+| About 64 GB unified memory, or at least 48 GB aggregate VRAM plus 64 GB system RAM | Qwen3-Coder-Next 80B-A3B Q4 at roughly 48.4 GB weights                          | Unified-memory bandwidth or multi-GPU interconnect becomes the limiting factor; avoid CPU layer offload where possible | begin near 32K         | stronger coding-agent experiments and private-code workflows            |
+| One 80 GB accelerator plus at least 128 GB system RAM, or 128 GB unified memory    | GPT-OSS 120B MXFP4 or Mistral 119–128B-class quantization                       | Accelerator/unified-memory resident, runtime-specific                                                                  | workload-tested        | workstation/server experimentation                                      |
+| At least 192 GB aggregate accelerator memory with server-class system RAM          | DeepSeek V4 Flash, MiniMax M3, Kimi, GLM, or larger open-weight deployments     | Multi-accelerator server deployment                                                                                    | deployment-specific    | controlled datacenter service                                           |
+
 
 By task class:
 
@@ -1002,6 +1046,10 @@ flowchart TD
     K -->|approved| C
     K -->|denied| H
 ```
+
+
+
+
 
 ### 12.1 Two-axis classification
 
@@ -1074,6 +1122,8 @@ The execution-unit rule is:
 
 > One cohesive behavior × one risk class × one independently executable oracle × one rollback point.
 
+
+
 ### 13.1 Split when
 
 - acceptance criteria can pass independently;
@@ -1097,12 +1147,16 @@ The file and line thresholds are reassessment triggers, not automatic rejection.
 - separate merges would create incompatible intermediate states;
 - debugging is sequential and depends on accumulated local evidence.
 
+
+
 ### 13.3 Commits, pull requests, and releases
 
 - A **commit** is a green checkpoint and recovery boundary.
 - A **pull request** is a coherent human trust, ownership, and risk boundary.
 - A **release** is an external side-effect and rollback boundary.
 - A function or file is only a task boundary when behavior, oracle, and rollback naturally align with it.
+
+
 
 ### 13.4 Delegation criteria
 
@@ -1113,6 +1167,8 @@ Spawn a worker only when:
 3. the assignment fits a short typed contract;
 4. acceptance is machine-checkable or cheaply human-reviewable;
 5. expected speed, diversity, or context benefit exceeds coordination cost.
+
+
 
 ### 13.5 Best-of-N
 
@@ -1125,7 +1181,11 @@ For hard, high-value tasks with genuinely different plausible solutions:
 - select with deterministic evidence plus fresh review;
 - apply only the winner and rerun integration checks.
 
+
+
 ## 14. Context engineering
+
+
 
 ### 14.1 Retrieval order
 
@@ -1182,67 +1242,64 @@ Retrieve live code dynamically. Memory items require provenance, scope, confiden
 - Retain canonical evidence according to audited retention policy. Garbage collection may delete only expired, non-required artifacts after projections and references prove that no retained event, approval, incident, or reproducibility obligation depends on them.
 - Deny secret inclusion unless explicitly required and authorized.
 
+
+
 ## 15. Verification design
+
+
 
 ### 15.1 Ordered gates
 
 Order gates by expected avoided downstream cost per unit of execution cost.
 
 1. **Authority and hygiene**
-   - path allowlist and denylist;
-   - diff-size alert;
-   - generated-artifact policy;
-   - secret scan.
-
+  - path allowlist and denylist;
+  - diff-size alert;
+  - generated-artifact policy;
+  - secret scan.
 2. **Fast static feedback**
-   - formatting;
-   - syntax/import validation;
-   - compile/build;
-   - typecheck;
-   - changed-file lint.
-
+  - formatting;
+  - syntax/import validation;
+  - compile/build;
+  - typecheck;
+  - changed-file lint.
 3. **Focused behavior**
-   - bug reproduction;
-   - affected unit tests;
-   - pass-to-pass regressions;
-   - negative control or mutation where practical.
-
+  - bug reproduction;
+  - affected unit tests;
+  - pass-to-pass regressions;
+  - negative control or mutation where practical.
 4. **Behavioral strength**
-   - impacted regression suite;
-   - property-based or metamorphic tests for broad invariants;
-   - differential tests where a reference exists;
-   - incremental mutation checks on changed covered lines.
-
+  - impacted regression suite;
+  - property-based or metamorphic tests for broad invariants;
+  - differential tests where a reference exists;
+  - incremental mutation checks on changed covered lines.
 5. **Boundary checks**
-   - integration and contract tests;
-   - database compatibility;
-   - architecture and dependency rules;
-   - cross-service failure, retry, idempotency, and partial-failure behavior.
-
+  - integration and contract tests;
+  - database compatibility;
+  - architecture and dependency rules;
+  - cross-service failure, retry, idempotency, and partial-failure behavior.
 6. **Triggered security checks**
-   - SAST, SCA, reachability, license, SBOM, IaC, and container checks;
-   - DAST, fuzzing, sanitizers, threat modelling, or specialist testing when risk warrants them.
-
+  - SAST, SCA, reachability, license, SBOM, IaC, and container checks;
+  - DAST, fuzzing, sanitizers, threat modelling, or specialist testing when risk warrants them.
 7. **System and performance**
-   - full relevant suite;
-   - impacted end-to-end journeys;
-   - controlled performance comparison with warmups, repetitions, effect size, and confidence interval.
-
+  - full relevant suite;
+  - impacted end-to-end journeys;
+  - controlled performance comparison with warmups, repetitions, effect size, and confidence interval.
 8. **Protected evaluation**
-   - immutable CI configuration;
-   - hidden composition and regression checks mounted only in the verification service;
-   - visible protected tests may be readable but remain outside implementation write authority;
-   - repeated stability checks for suspected flakes;
-   - signed artifact and provenance where required.
-
+  - immutable CI configuration;
+  - hidden composition and regression checks mounted only in the verification service;
+  - visible protected tests may be readable but remain outside implementation write authority;
+  - repeated stability checks for suspected flakes;
+  - signed artifact and provenance where required.
 9. **Independent semantic review**
-   - original contract and non-goals;
-   - diff and dependency context;
-   - raw gate evidence;
-   - risk classification.
-
+  - original contract and non-goals;
+  - diff and dependency context;
+  - raw gate evidence;
+  - risk classification.
 10. **Human gate**
-    - applied according to risk and policy.
+  - applied according to risk and policy.
+
+
 
 ### 15.2 Generated-test limitations
 
@@ -1252,6 +1309,8 @@ A model-authored test can encode the same misunderstanding as its patch. Require
 - a negative mutant;
 - independent requirements review;
 - protected tests the implementer cannot edit.
+
+
 
 ### 15.3 Reviewer protocol
 
@@ -1278,6 +1337,8 @@ Oracle strength may add verification and review requirements but cannot remove t
 
 ## 16. Error handling and stopping rules
 
+
+
 ### 16.1 Transport and infrastructure failures
 
 Retry only failures classified as transient:
@@ -1287,6 +1348,8 @@ Retry only failures classified as transient:
 - use capped exponential backoff with jitter;
 - allow no more than two retries after the initial call;
 - preserve every attempt and provider request identifier.
+
+
 
 ### 16.2 Semantic failures
 
@@ -1298,6 +1361,8 @@ Retry only failures classified as transient:
 - Stop when the three-cycle contract limit, frontier-cycle limit, or another stricter stop condition is reached.
 - Stop earlier if expected value of another attempt is non-positive.
 
+
+
 ### 16.3 Flaky tests
 
 A retry may diagnose nondeterminism but may not silently turn a red gate green:
@@ -1308,6 +1373,8 @@ A retry may diagnose nondeterminism but may not silently turn a red gate green:
 4. quarantine only into a visible continuously running job;
 5. assign an owner and expiry;
 6. do not auto-merge high-risk changes when relevant coverage is quarantined.
+
+
 
 ### 16.4 Immediate stop conditions
 
@@ -1321,29 +1388,34 @@ A retry may diagnose nondeterminism but may not silently turn a red gate green:
 - unresolved product decision;
 - suspicious access to protected evaluator data.
 
+
+
 ## 17. Cost model and controls
+
+
 
 ### 17.1 Ex-ante and ex-post task cost
 
-Routing uses ex-ante expected cost for task \(i\):
+Routing uses ex-ante expected cost for task i:
 
 $$
 E[TC_i^{\text{route}}] =
 \sum_j C_{\text{model},j}
-+ C_{\text{CI/tools}}
-+ w_h(H_{\text{prompt}}+H_{\text{review}}+H_{\text{rework}}+H_{\text{blocked}})
-+ w_dD_{\text{delay}}
-+ P_{\text{escape}}L_{\text{escape}}
-+ C_{\text{fixed allocation}}
+
+- C_{\text{CI/tools}}
+- w_h(H_{\text{prompt}}+H_{\text{review}}+H_{\text{rework}}+H_{\text{blocked}})
+- w_dD_{\text{delay}}
+- P_{\text{escape}}L_{\text{escape}}
+- C_{\text{fixed allocation}}
 $$
 
 Where:
 
-- \(w_h\) is loaded engineer cost per hour;
-- each \(H_*\) term is engineer time in hours; telemetry recorded in minutes is divided by 60;
-- \(w_d\) is business cost of delay per hour;
-- \(D_{\text{delay}}\) is calendar delay in hours;
-- \(L_{\text{escape}}\) is expected incident, rollback, or defect loss;
+- w_h is loaded engineer cost per hour;
+- each H_* term is engineer time in hours; telemetry recorded in minutes is divided by 60;
+- w_d is business cost of delay per hour;
+- D_{\text{delay}} is calendar delay in hours;
+- L_{\text{escape}} is expected incident, rollback, or defect loss;
 - fixed allocation includes subscriptions, observability, and orchestration maintenance.
 
 Evaluation uses realized cost and does not also add expected escape loss:
@@ -1351,11 +1423,12 @@ Evaluation uses realized cost and does not also add expected escape loss:
 $$
 TC_i^{\text{realized}} =
 \sum_j C_{\text{model},j}
-+ C_{\text{CI/tools}}
-+ w_h(H_{\text{prompt}}+H_{\text{review}}+H_{\text{rework}}+H_{\text{blocked}})
-+ w_dD_{\text{delay}}
-+ L_{\text{incident,realized}}
-+ C_{\text{fixed allocation}}
+
+- C_{\text{CI/tools}}
+- w_h(H_{\text{prompt}}+H_{\text{review}}+H_{\text{rework}}+H_{\text{blocked}})
+- w_dD_{\text{delay}}
+- L_{\text{incident,realized}}
+- C_{\text{fixed allocation}}
 $$
 
 The primary observed economic metric is:
@@ -1363,7 +1436,7 @@ The primary observed economic metric is:
 $$
 \text{Cost per durable change} =
 \frac{\sum TC_i^{\text{realized}}}
-{\#(\text{accepted changes surviving the observation period})}
+{(\text{accepted changes surviving the observation period})}
 $$
 
 Track cash cost and API-equivalent economic cost separately so subscriptions do not hide inference allocation.
@@ -1381,21 +1454,22 @@ For a senior engineer, a few extra review minutes can exceed the model-price dif
 
 For frontier escalation, let:
 
-- \(\Delta C_{\text{model}}\) be the frontier model-price premium;
-- \(\Delta p_{\text{success}}\) be its absolute increase in durable-success probability;
-- \(R_{\text{failure}}\) be expected repair, duplicated context, CI, and delay cost after failure;
-- \(\Delta p_{\text{safe}}\) be the reduction in escaped-defect probability;
-- \(\Delta H\) and \(\Delta D\) be engineer hours and delay hours avoided.
+- \Delta C_{\text{model}} be the frontier model-price premium;
+- \Delta p_{\text{success}} be its absolute increase in durable-success probability;
+- R_{\text{failure}} be expected repair, duplicated context, CI, and delay cost after failure;
+- \Delta p_{\text{safe}} be the reduction in escaped-defect probability;
+- \Delta H and \Delta D be engineer hours and delay hours avoided.
 
 Escalation has positive expected value when:
 
 $$
 \Delta p_{\text{success}}R_{\text{failure}}
-+ \Delta p_{\text{safe}}L_{\text{escape}}
-+ w_h\Delta H
-+ w_d\Delta D
-> \Delta C_{\text{model}}
-$$
+
+- \Delta p_{\text{safe}}L_{\text{escape}}
+- w_h\Delta H
+- w_d\Delta D
+  > \Delta C_{\text{model}}
+  > $$
 
 Using the illustrative 100K-input/20K-output prices in §11.4:
 
@@ -1469,6 +1543,8 @@ Reproducibility means preserving enough inputs and environment identity to repla
 Telemetry content is encrypted or hashed according to policy. Secrets and sensitive source are excluded by default, with explicit retention limits.
 
 ## 19. Evaluation plan
+
+
 
 ### 19.1 Offline corpus
 
@@ -1565,11 +1641,15 @@ Report the Pareto frontier across success, cost, latency, and risk. Do not colla
 
 ## 20. Cursor and Superpowers mapping
 
+
+
 ### 20.1 Intent and design
 
 - Use Cursor Plan mode and Superpowers brainstorming for ambiguous, broad, or high-risk changes.
 - Permit a compact contract path for bounded work where full ceremony has negative expected value.
 - Keep project rules concise, source-controlled, and cache-friendly.
+
+
 
 ### 20.2 Contract generation
 
@@ -1582,6 +1662,8 @@ Extend the Superpowers writing-plans artifact with:
 - rollback and approval requirements;
 - required evidence schema.
 
+
+
 ### 20.3 Context
 
 - Use Cursor indexing for semantic search.
@@ -1589,12 +1671,16 @@ Extend the Superpowers writing-plans artifact with:
 - Add a repository-map and provenance layer for deterministic orientation.
 - Persist Context Manifest references rather than copied stale summaries.
 
+
+
 ### 20.4 Execution
 
 - Use one capable Cursor Agent for coupled implementation.
 - Use subagent-driven development only for independently testable assignments.
 - Use a worktree for every mutating worker or candidate.
 - Namespace ports, databases, caches, and containers in addition to source worktrees.
+
+
 
 ### 20.5 Enforcement
 
@@ -1606,12 +1692,16 @@ Extend the Superpowers writing-plans artifact with:
 - Keep protected CI and evaluator configuration outside agent write authority.
 - Enforce contract permissions mechanically rather than relying on prompt adherence.
 
+
+
 ### 20.6 Review
 
 - Use fresh Agent Review, Bugbot, or security review after deterministic gates.
 - Do not treat Bugbot alone as human or cross-provider independence.
 - Use a different-provider frontier reviewer for high-risk changes where practical.
 - Require human approval according to risk.
+
+
 
 ### 20.7 Background execution
 
@@ -1622,7 +1712,11 @@ Cloud Agents and automations are admitted only after:
 - costs and stopping behavior are bounded;
 - human review capacity can absorb generated work.
 
+
+
 ## 21. Rollout plan
+
+
 
 ### Phase 0 — Manual policy and baseline
 
@@ -1705,6 +1799,8 @@ Each phase is independently valuable. Failure to justify a later phase does not 
 
 ## 22. Principal risks and mitigations
 
+
+
 ### 22.1 Router miscalibration
 
 **Risk:** Generic benchmarks or stale telemetry route repository work incorrectly.  
@@ -1767,37 +1863,32 @@ Each phase is independently valuable. Failure to justify a later phase does not 
 
 ## 23. Assumptions explicitly rejected
 
-1. **“A better plan lets a much smaller model implement anything.”**  
-   False for dynamic repository exploration, debugging, and integration.
+1. **“A better plan lets a much smaller model implement anything.”**
+  False for dynamic repository exploration, debugging, and integration.
+2. **“Cheaper tokens produce cheaper software changes.”**
+  False when retries, context duplication, human time, CI, and defects are included.
+3. **“More agents improve reliability.”**
+  False outside independent, well-specified work with a capable validation bottleneck.
+4. **“A selected file list is repository context.”**
+  It is an initial localization hypothesis. Read broadly and write narrowly.
+5. **“A million-token window replaces retrieval.”**
+  Accepted context length is not effective attention, freshness, or provenance.
+6. **“Passing model-generated tests proves correctness.”**
+  Generated tests can encode the same misunderstanding and encourage overfitting.
+7. **“Model confidence can drive autonomous completion.”**
+  Executable evidence, calibrated policy, and authorized humans are stronger signals.
+8. **“Cloud agents can be deterministic.”**
+  Inputs and environments can be replayable; stochastic model output must be measured as a distribution.
+9. **“One function, file, commit, or PR is the universal task size.”**
+  Cohesion, risk, oracle, and rollback define the useful unit.
+10. **“Local inference is inherently cheaper.”**
+  Hardware, operations, utilization, quantization, latency, and quality can make APIs much cheaper.
 
-2. **“Cheaper tokens produce cheaper software changes.”**  
-   False when retries, context duplication, human time, CI, and defects are included.
 
-3. **“More agents improve reliability.”**  
-   False outside independent, well-specified work with a capable validation bottleneck.
-
-4. **“A selected file list is repository context.”**  
-   It is an initial localization hypothesis. Read broadly and write narrowly.
-
-5. **“A million-token window replaces retrieval.”**  
-   Accepted context length is not effective attention, freshness, or provenance.
-
-6. **“Passing model-generated tests proves correctness.”**  
-   Generated tests can encode the same misunderstanding and encourage overfitting.
-
-7. **“Model confidence can drive autonomous completion.”**  
-   Executable evidence, calibrated policy, and authorized humans are stronger signals.
-
-8. **“Cloud agents can be deterministic.”**  
-   Inputs and environments can be replayable; stochastic model output must be measured as a distribution.
-
-9. **“One function, file, commit, or PR is the universal task size.”**  
-   Cohesion, risk, oracle, and rollback define the useful unit.
-
-10. **“Local inference is inherently cheaper.”**  
-    Hardware, operations, utilization, quantization, latency, and quality can make APIs much cheaper.
 
 ## 24. Promising ideas not yet widely standardized
+
+
 
 ### 24.1 Three-part Execution Package
 
@@ -1867,103 +1958,113 @@ Official product pages establish feature availability, not effectiveness. All li
 
 ### 27.1 Agent architecture, routing, and reliability
 
-- Anthropic, “Building effective agents,” 2024-12-19: <https://www.anthropic.com/research/building-effective-agents>
-- Anthropic, “How we built our multi-agent research system,” 2025-06-13: <https://www.anthropic.com/engineering/multi-agent-research-system>
-- Google, “Towards a science of scaling agent systems,” 2026-01-28: <https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/>
-- FrugalGPT: <https://arxiv.org/abs/2305.05176>
-- RouteLLM: <https://arxiv.org/abs/2406.18665>
-- SWE-Router: <https://arxiv.org/abs/2607.00053>
-- “Do More Agents Help?”: <https://arxiv.org/abs/2606.05670>
-- Agentless: <https://arxiv.org/abs/2407.01489>
-- SWE-agent: <https://arxiv.org/abs/2405.15793>
-- OpenHands: <https://proceedings.iclr.cc/paper_files/paper/2025/hash/a4b6ad6b48850c0c331d1259fc66a69c-Abstract-Conference.html>
-- MASAI: <https://arxiv.org/abs/2406.11638>
-- CodeDelegator: <https://arxiv.org/abs/2601.14914>
-- Plan-compliance study: <https://arxiv.org/abs/2604.12147>
-- PaT adaptive planning: <https://aclanthology.org/2026.acl-long.1703/>
-- SWE-Protégé: <https://arxiv.org/abs/2602.22124>
-- AgentLens: <https://arxiv.org/abs/2605.12925>
-- SWE-Effi: <https://arxiv.org/abs/2509.09853>
+- Anthropic, “Building effective agents,” 2024-12-19: [https://www.anthropic.com/research/building-effective-agents](https://www.anthropic.com/research/building-effective-agents)
+- Anthropic, “How we built our multi-agent research system,” 2025-06-13: [https://www.anthropic.com/engineering/multi-agent-research-system](https://www.anthropic.com/engineering/multi-agent-research-system)
+- Google, “Towards a science of scaling agent systems,” 2026-01-28: [https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/)
+- FrugalGPT: [https://arxiv.org/abs/2305.05176](https://arxiv.org/abs/2305.05176)
+- RouteLLM: [https://arxiv.org/abs/2406.18665](https://arxiv.org/abs/2406.18665)
+- SWE-Router: [https://arxiv.org/abs/2607.00053](https://arxiv.org/abs/2607.00053)
+- “Do More Agents Help?”: [https://arxiv.org/abs/2606.05670](https://arxiv.org/abs/2606.05670)
+- Agentless: [https://arxiv.org/abs/2407.01489](https://arxiv.org/abs/2407.01489)
+- SWE-agent: [https://arxiv.org/abs/2405.15793](https://arxiv.org/abs/2405.15793)
+- OpenHands: [https://proceedings.iclr.cc/paper_files/paper/2025/hash/a4b6ad6b48850c0c331d1259fc66a69c-Abstract-Conference.html](https://proceedings.iclr.cc/paper_files/paper/2025/hash/a4b6ad6b48850c0c331d1259fc66a69c-Abstract-Conference.html)
+- MASAI: [https://arxiv.org/abs/2406.11638](https://arxiv.org/abs/2406.11638)
+- CodeDelegator: [https://arxiv.org/abs/2601.14914](https://arxiv.org/abs/2601.14914)
+- Plan-compliance study: [https://arxiv.org/abs/2604.12147](https://arxiv.org/abs/2604.12147)
+- PaT adaptive planning: [https://aclanthology.org/2026.acl-long.1703/](https://aclanthology.org/2026.acl-long.1703/)
+- SWE-Protégé: [https://arxiv.org/abs/2602.22124](https://arxiv.org/abs/2602.22124)
+- AgentLens: [https://arxiv.org/abs/2605.12925](https://arxiv.org/abs/2605.12925)
+- SWE-Effi: [https://arxiv.org/abs/2509.09853](https://arxiv.org/abs/2509.09853)
+
+
 
 ### 27.2 Context engineering and contracts
 
-- Aider repository map: <https://aider.chat/2023/10/22/repomap.html>
-- Tree-sitter: <https://tree-sitter.github.io/tree-sitter/>
-- SCIP: <https://scip-code.org/>
-- CodeQL data-flow limitations: <https://codeql.github.com/docs/writing-codeql-queries/about-data-flow-analysis/>
-- RepoCoder: <https://arxiv.org/abs/2303.12570>
-- Repoformer: <https://arxiv.org/abs/2403.10059>
-- DraCo: <https://arxiv.org/abs/2405.19782>
-- CodeRAG-Bench: <https://arxiv.org/abs/2406.14497>
-- AutoCodeRover: <https://arxiv.org/abs/2404.05427>
-- CodePlan: <https://arxiv.org/abs/2309.12499>
-- ContextBench: <https://arxiv.org/abs/2602.05892>
-- SWE-Explore: <https://arxiv.org/abs/2606.07297>
-- CORE-Bench: <https://arxiv.org/abs/2606.11864>
-- Lost in the Middle: <https://arxiv.org/abs/2307.03172>
-- RULER: <https://arxiv.org/abs/2404.06654>
-- SWEzze: <https://arxiv.org/abs/2603.28119>
-- Software Delegation Contracts: <https://arxiv.org/abs/2606.17099>
-- SWE-ContextBench: <https://arxiv.org/abs/2602.08316>
-- Anthropic context engineering: <https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents>
+- Aider repository map: [https://aider.chat/2023/10/22/repomap.html](https://aider.chat/2023/10/22/repomap.html)
+- Tree-sitter: [https://tree-sitter.github.io/tree-sitter/](https://tree-sitter.github.io/tree-sitter/)
+- SCIP: [https://scip-code.org/](https://scip-code.org/)
+- CodeQL data-flow limitations: [https://codeql.github.com/docs/writing-codeql-queries/about-data-flow-analysis/](https://codeql.github.com/docs/writing-codeql-queries/about-data-flow-analysis/)
+- RepoCoder: [https://arxiv.org/abs/2303.12570](https://arxiv.org/abs/2303.12570)
+- Repoformer: [https://arxiv.org/abs/2403.10059](https://arxiv.org/abs/2403.10059)
+- DraCo: [https://arxiv.org/abs/2405.19782](https://arxiv.org/abs/2405.19782)
+- CodeRAG-Bench: [https://arxiv.org/abs/2406.14497](https://arxiv.org/abs/2406.14497)
+- AutoCodeRover: [https://arxiv.org/abs/2404.05427](https://arxiv.org/abs/2404.05427)
+- CodePlan: [https://arxiv.org/abs/2309.12499](https://arxiv.org/abs/2309.12499)
+- ContextBench: [https://arxiv.org/abs/2602.05892](https://arxiv.org/abs/2602.05892)
+- SWE-Explore: [https://arxiv.org/abs/2606.07297](https://arxiv.org/abs/2606.07297)
+- CORE-Bench: [https://arxiv.org/abs/2606.11864](https://arxiv.org/abs/2606.11864)
+- Lost in the Middle: [https://arxiv.org/abs/2307.03172](https://arxiv.org/abs/2307.03172)
+- RULER: [https://arxiv.org/abs/2404.06654](https://arxiv.org/abs/2404.06654)
+- SWEzze: [https://arxiv.org/abs/2603.28119](https://arxiv.org/abs/2603.28119)
+- Software Delegation Contracts: [https://arxiv.org/abs/2606.17099](https://arxiv.org/abs/2606.17099)
+- SWE-ContextBench: [https://arxiv.org/abs/2602.08316](https://arxiv.org/abs/2602.08316)
+- Anthropic context engineering: [https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+
+
 
 ### 27.3 Verification, task size, and evaluation
 
-- DORA AI Capabilities Model, 2025-09-23: <https://cloud.google.com/blog/products/ai-machine-learning/introducing-doras-inaugural-ai-capabilities-model>
-- FeatureBench: <https://arxiv.org/abs/2602.10975>
-- METR Time Horizons: <https://metr.org/time-horizons/>
-- SWT-Bench: <https://proceedings.neurips.cc/paper_files/paper/2024/hash/94f093b41fc2666376fb1f667fe282f3-Abstract.html>
-- Test-overfitting study: <https://arxiv.org/abs/2511.16858>
-- SlopCodeBench: <https://arxiv.org/abs/2603.24755>
-- SpecBench: <https://arxiv.org/abs/2605.21384>
-- CR-Bench: <https://arxiv.org/abs/2603.11078>
-- OpenAI SWE-bench Verified audit, 2026-02-23: <https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/>
-- OpenAI SWE-bench Pro audit, 2026-07-08: <https://openai.com/index/separating-signal-from-noise-coding-evaluations>
-- Cursor reward-hacking audit, 2026-06-25: <https://cursor.com/blog/reward-hacking-coding-benchmarks>
-- NIST SSDF 1.1: <https://csrc.nist.gov/pubs/sp/800/218/final>
-- OWASP ASVS 5.0: <https://asvs.dev/v5.0.0/>
-- SLSA 1.2: <https://slsa.dev/>
+- DORA AI Capabilities Model, 2025-09-23: [https://cloud.google.com/blog/products/ai-machine-learning/introducing-doras-inaugural-ai-capabilities-model](https://cloud.google.com/blog/products/ai-machine-learning/introducing-doras-inaugural-ai-capabilities-model)
+- FeatureBench: [https://arxiv.org/abs/2602.10975](https://arxiv.org/abs/2602.10975)
+- METR Time Horizons: [https://metr.org/time-horizons/](https://metr.org/time-horizons/)
+- SWT-Bench: [https://proceedings.neurips.cc/paper_files/paper/2024/hash/94f093b41fc2666376fb1f667fe282f3-Abstract.html](https://proceedings.neurips.cc/paper_files/paper/2024/hash/94f093b41fc2666376fb1f667fe282f3-Abstract.html)
+- Test-overfitting study: [https://arxiv.org/abs/2511.16858](https://arxiv.org/abs/2511.16858)
+- SlopCodeBench: [https://arxiv.org/abs/2603.24755](https://arxiv.org/abs/2603.24755)
+- SpecBench: [https://arxiv.org/abs/2605.21384](https://arxiv.org/abs/2605.21384)
+- CR-Bench: [https://arxiv.org/abs/2603.11078](https://arxiv.org/abs/2603.11078)
+- OpenAI SWE-bench Verified audit, 2026-02-23: [https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)
+- OpenAI SWE-bench Pro audit, 2026-07-08: [https://openai.com/index/separating-signal-from-noise-coding-evaluations](https://openai.com/index/separating-signal-from-noise-coding-evaluations)
+- Cursor reward-hacking audit, 2026-06-25: [https://cursor.com/blog/reward-hacking-coding-benchmarks](https://cursor.com/blog/reward-hacking-coding-benchmarks)
+- NIST SSDF 1.1: [https://csrc.nist.gov/pubs/sp/800/218/final](https://csrc.nist.gov/pubs/sp/800/218/final)
+- OWASP ASVS 5.0: [https://asvs.dev/v5.0.0/](https://asvs.dev/v5.0.0/)
+- SLSA 1.2: [https://slsa.dev/](https://slsa.dev/)
+
+
 
 ### 27.4 Product and workflow documentation
 
-- Superpowers: <https://github.com/obra/superpowers>
-- Cursor: <https://cursor.com/docs>
-- Claude Code: <https://docs.anthropic.com/en/docs/claude-code/overview>
-- OpenAI Codex: <https://developers.openai.com/codex/>
-- GitHub Copilot coding agents: <https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent>
-- Gemini CLI: <https://github.com/google-gemini/gemini-cli>
-- OpenHands: <https://docs.openhands.dev/>
-- Roo Code: <https://docs.roocode.com/>
-- Cline: <https://docs.cline.bot/>
-- Aider: <https://aider.chat/docs/>
-- Amp: <https://ampcode.com/manual>
-- Goose: <https://block.github.io/goose/>
-- Factory: <https://docs.factory.ai/>
-- Kiro: <https://kiro.dev/docs/>
-- Devin: <https://docs.devin.ai/>
-- Augment: <https://docs.augmentcode.com/>
-- Jules: <https://jules.google/docs/>
+- Superpowers: [https://github.com/obra/superpowers](https://github.com/obra/superpowers)
+- Cursor: [https://cursor.com/docs](https://cursor.com/docs)
+- Claude Code: [https://docs.anthropic.com/en/docs/claude-code/overview](https://docs.anthropic.com/en/docs/claude-code/overview)
+- OpenAI Codex: [https://developers.openai.com/codex/](https://developers.openai.com/codex/)
+- GitHub Copilot coding agents: [https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent](https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent)
+- Gemini CLI: [https://github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
+- OpenHands: [https://docs.openhands.dev/](https://docs.openhands.dev/)
+- Roo Code: [https://docs.roocode.com/](https://docs.roocode.com/)
+- Cline: [https://docs.cline.bot/](https://docs.cline.bot/)
+- Aider: [https://aider.chat/docs/](https://aider.chat/docs/)
+- Amp: [https://ampcode.com/manual](https://ampcode.com/manual)
+- Goose: [https://block.github.io/goose/](https://block.github.io/goose/)
+- Factory: [https://docs.factory.ai/](https://docs.factory.ai/)
+- Kiro: [https://kiro.dev/docs/](https://kiro.dev/docs/)
+- Devin: [https://docs.devin.ai/](https://docs.devin.ai/)
+- Augment: [https://docs.augmentcode.com/](https://docs.augmentcode.com/)
+- Jules: [https://jules.google/docs/](https://jules.google/docs/)
+
+
 
 ### 27.5 Current model and pricing sources
 
-- OpenAI GPT-5.6 models: <https://developers.openai.com/api/docs/models>
-- Anthropic models and pricing: <https://docs.anthropic.com/en/docs/about-claude/models/overview>
-- Gemini models and pricing: <https://ai.google.dev/gemini-api/docs/pricing>
-- DeepSeek pricing: <https://api-docs.deepseek.com/quick_start/pricing>
-- Z.ai GLM documentation: <https://docs.z.ai/guides/overview/pricing>
-- Qwen models: <https://www.qwencloud.com/models>
-- Mistral pricing and model cards: <https://mistral.ai/pricing/api/>
-- Kimi pricing: <https://platform.moonshot.ai/docs/pricing>
-- MiniMax pricing: <https://platform.minimax.io/docs/guides/pricing-paygo>
-- GPT-OSS 20B and 120B model cards: <https://huggingface.co/openai/gpt-oss-20b> and <https://huggingface.co/openai/gpt-oss-120b>
-- Qwen3.6 27B model card: <https://huggingface.co/Qwen/Qwen3.6-27B>
-- Qwen3-Coder 30B model card: <https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct>
-- Qwen3-Coder-Next model card: <https://huggingface.co/Qwen/Qwen3-Coder-Next>
-- Devstral Small 2 model card: <https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512>
-- Artificial Analysis coding-agent benchmark: <https://artificialanalysis.ai/agents/coding-agents>
-- OpenHands Index: <https://huggingface.co/datasets/OpenHands/openhands-index>
-- SWE-rebench: <https://swe-rebench.com/>
-- Terminal-Bench 2.1: <https://www.tbench.ai/leaderboard/terminal-bench/2.1>
+- OpenAI GPT-5.6 models: [https://developers.openai.com/api/docs/models](https://developers.openai.com/api/docs/models)
+- Anthropic models and pricing: [https://docs.anthropic.com/en/docs/about-claude/models/overview](https://docs.anthropic.com/en/docs/about-claude/models/overview)
+- Gemini models and pricing: [https://ai.google.dev/gemini-api/docs/pricing](https://ai.google.dev/gemini-api/docs/pricing)
+- DeepSeek pricing: [https://api-docs.deepseek.com/quick_start/pricing](https://api-docs.deepseek.com/quick_start/pricing)
+- Z.ai GLM documentation: [https://docs.z.ai/guides/overview/pricing](https://docs.z.ai/guides/overview/pricing)
+- Qwen models: [https://www.qwencloud.com/models](https://www.qwencloud.com/models)
+- Mistral pricing and model cards: [https://mistral.ai/pricing/api/](https://mistral.ai/pricing/api/)
+- Kimi pricing: [https://platform.moonshot.ai/docs/pricing](https://platform.moonshot.ai/docs/pricing)
+- MiniMax pricing: [https://platform.minimax.io/docs/guides/pricing-paygo](https://platform.minimax.io/docs/guides/pricing-paygo)
+- GPT-OSS 20B and 120B model cards: [https://huggingface.co/openai/gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) and [https://huggingface.co/openai/gpt-oss-120b](https://huggingface.co/openai/gpt-oss-120b)
+- Qwen3.6 27B model card: [https://huggingface.co/Qwen/Qwen3.6-27B](https://huggingface.co/Qwen/Qwen3.6-27B)
+- Qwen3-Coder 30B model card: [https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct](https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct)
+- Qwen3-Coder-Next model card: [https://huggingface.co/Qwen/Qwen3-Coder-Next](https://huggingface.co/Qwen/Qwen3-Coder-Next)
+- Devstral Small 2 model card: [https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512](https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512)
+- Artificial Analysis coding-agent benchmark: [https://artificialanalysis.ai/agents/coding-agents](https://artificialanalysis.ai/agents/coding-agents)
+- OpenHands Index: [https://huggingface.co/datasets/OpenHands/openhands-index](https://huggingface.co/datasets/OpenHands/openhands-index)
+- SWE-rebench: [https://swe-rebench.com/](https://swe-rebench.com/)
+- Terminal-Bench 2.1: [https://www.tbench.ai/leaderboard/terminal-bench/2.1](https://www.tbench.ai/leaderboard/terminal-bench/2.1)
+
+
 
 ## 28. Final recommendation
 
@@ -1982,3 +2083,4 @@ Manual frontier escalation and explicitly bounded cheap work may be used immedia
 The durable design principle is:
 
 > Spend model capability at information bottlenecks, preserve one accountable owner for coupled work, and let executable evidence—not prose confidence—control progress.
+
