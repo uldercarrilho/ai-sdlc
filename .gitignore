@@ -1,6 +1,21 @@
 # Local Superpowers brainstorm session artifacts
 .superpowers/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg
+
 # OS and editor
 .DS_Store
 Thumbs.db

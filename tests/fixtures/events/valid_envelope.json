@@ -1,0 +1,12 @@
+{
+  "event_id": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "task_id": "TASK-001",
+  "sequence": 1,
+  "occurred_at": "2026-07-11T14:36:00Z",
+  "event_type": "contract.drafted",
+  "actor": { "kind": "human", "id": "owner" },
+  "artifact_refs": [],
+  "payload_schema": "contract-drafted/v0.1",
+  "payload_ref": "sha256:00000000000000000000000000000000000000000000000000000000000000aa",
+  "previous_event_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aisdlc.dev/schemas/evidence-event/v0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "task_id",
+    "sequence",
+    "occurred_at",
+    "event_type",
+    "actor",
+    "artifact_refs",
+    "payload_schema",
+    "payload_ref",
+    "previous_event_hash"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "minLength": 1 },
+    "task_id": { "type": "string", "minLength": 1 },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "event_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "model", "tool", "system"] },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+    },
+    "payload_schema": { "type": "string", "minLength": 1 },
+    "payload_ref": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "previous_event_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "event_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
