@@ -16,7 +16,8 @@ def get_event_validator() -> Draft202012Validator:
     raw = resources.files("aisdlc.schemas.evidence-event").joinpath("v0.1.0.schema.json").read_text(
         encoding="utf-8"
     )
-    return Draft202012Validator(json.loads(raw))
+    schema = json.loads(raw)
+    return Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
 
 
 def validate_event_envelope(event: dict[str, Any]) -> None:

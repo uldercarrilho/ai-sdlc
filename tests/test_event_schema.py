@@ -20,3 +20,10 @@ def test_missing_event_id_rejected():
     del event["event_id"]
     with pytest.raises(ValidationError):
         validate_event_envelope(event)
+
+
+def test_invalid_occurred_at_rejected():
+    event = json.loads((FIXTURES / "valid_envelope.json").read_text(encoding="utf-8"))
+    event["occurred_at"] = "not-a-datetime"
+    with pytest.raises(ValidationError):
+        validate_event_envelope(event)

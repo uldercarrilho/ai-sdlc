@@ -17,7 +17,7 @@ def get_contract_validator() -> Draft202012Validator:
         encoding="utf-8"
     )
     schema = json.loads(raw)
-    return Draft202012Validator(schema)
+    return Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
 
 
 def validate_contract_document(doc: dict[str, Any]) -> None:
