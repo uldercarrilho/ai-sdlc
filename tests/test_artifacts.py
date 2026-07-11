@@ -22,3 +22,13 @@ def test_put_is_idempotent(tmp_data_dir):
     store = ArtifactStore(tmp_data_dir / "artifacts")
     data = b"same-bytes"
     assert store.put(data) == store.put(data)
+
+
+def test_put_heals_corrupted_file(tmp_data_dir):
+    store = ArtifactStore(tmp_data_dir / "artifacts")
+    data = b"correct-bytes"
+    ref = store.put(data)
+    path = store._path_for_ref(ref)
+    path.write_bytes(b"corrupted")
+    store.put(data)
+    assert store.get(ref) == data
